@@ -51,7 +51,7 @@ function getHistory(history) {
   return history || createBrowserHistory();
 }
 
-export default function createBrowserApp(App, { history: historyOption } = {}) {
+export default function createBrowserApp(App, { history: historyOption, updateDocumentTitle } = {}) {
   const history = getHistory(historyOption);
   let currentPathAndParams = getPathAndParamsFromLocation(history.location);
   const initAction =
@@ -105,7 +105,11 @@ export default function createBrowserApp(App, { history: historyOption } = {}) {
       const opts = App.router.getScreenOptions(activeNav);
       this._title = opts.title || opts.headerTitle;
       if (this._title) {
-        document.title = this._title;
+        if (updateDocumentTitle) {
+          updateDocumentTitle(this._title) 
+        } else {
+          document.title = this._title;
+        }
       }
     }
 
